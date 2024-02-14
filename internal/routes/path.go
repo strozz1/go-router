@@ -68,6 +68,8 @@ func (p *Path) Search(routes []string) *PathContent{
         tmp = FromString(n)
         find := current.GetChild(tmp)
 
+        
+
         //if nil create new node and append to current
         if(find == nil){
             return nil
