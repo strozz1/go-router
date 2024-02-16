@@ -1,4 +1,4 @@
-module github.com/strozz1/pinkbikers-web
+module github.com/strozz1/go-router
 
 go 1.22.0
 

@@ -3,7 +3,7 @@ package handlers
 import (
     "fmt"
     "net/http"
-    "github.com/strozz1/pinkbikers-web/internal/types"
+    "github.com/strozz1/go-router/internal/types"
 )
 
 func HandleRutas(w http.ResponseWriter, r *http.Request) {

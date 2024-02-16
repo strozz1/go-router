@@ -1,23 +1,27 @@
 package main
 
 import (
-	"flag"
 	"log"
+	"net/http"
 
-	"github.com/strozz1/pinkbikers-web/internal/api"
-	"github.com/strozz1/pinkbikers-web/internal/storage"
-	"github.com/strozz1/pinkbikers-web/internal/types"
+	"github.com/strozz1/go-router/internal/handlers"
+	"github.com/strozz1/go-router/internal/routes"
 )
 
 func main() {
-    
-    
-    addr := flag.String("addr",":8000","The server address")
-    flag.Parse()
-    mock := &storage.MockDB[types.Ruta]{}
-    server :=api.New(*addr,mock)
-    log.Print("Server initialized at address: ", *addr)
-    server.Start()
 
+    //Example usage
+    addr := ":8000"   
+  	router := routes.NewRouter()
+
+	router.Endpoint("/", handlers.HandleIndex)
+    router.Endpoint("/inicio", handlers.HandleHome)      //.Middlewares(middlewares.Method("GET"),middlewares.Logging())
+	router.Endpoint("/rutas", handlers.HandleRutas)      //.Middlewares(middlewares.Method("GET"),middlewares.Logging())
+	router.Endpoint("/rutas/pendientes", handlers.HandleRutas) //.Middlewares(middlewares.Method("GET"),middlewares.Logging())
+	router.Endpoint("/cositas//pedro/casa", handlers.HandleRutas) //.Middlewares(middlewares.Method("GET"),middlewares.Logging())
+    router.PrintRoutes()   
+    log.Println("Listening on ",addr)
+	http.ListenAndServe(addr, &router)
+	 
 
 }

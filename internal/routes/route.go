@@ -3,7 +3,7 @@ package routes
 import (
 	"net/http"
 
-	"github.com/strozz1/pinkbikers-web/internal/middlewares"
+	"github.com/strozz1/go-router/internal/middlewares"
 )
 
 type Route struct{
