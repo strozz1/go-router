@@ -19,12 +19,10 @@ func NewRouter() Router {
 	}
 }
 
-
 // For debug purposes
-func (r *Router) PrintRoutes() { 
+func (r *Router) PrintRoutes() {
 	r.routes.Print()
 }
-
 
 // splits the given path and returns tuple with the slice in case of success or error.
 //
@@ -67,7 +65,8 @@ func (router *Router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		handler = http.NotFoundHandler()
 	} else {
 		pathContent := router.Search(path)
-		if pathContent != nil && pathContent.handler != nil{
+        log.Println(pathContent)
+		if pathContent != nil && pathContent.handler != nil {
 			handler = pathContent.handler
 		} else {
 			handler = http.NotFoundHandler()
@@ -92,19 +91,25 @@ func (r *Router) Endpoint(path string, handler http.HandlerFunc) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	r.AddRoute(paths, handler)
+	_,err=r.AddRoute(paths, handler)
+    if(err!=nil){
+        log.Fatal("Error creating route: ",err)
+    }
 }
 
-
-// Adds a route to the current router. 
+// Adds a route to the current router.
 //
 // @params: routes-[]string the route, handler: handler func for the route
-func (r *Router) AddRoute(routes []string, handler http.HandlerFunc) *Segment {
+func (r *Router) AddRoute(routes []string, handler http.HandlerFunc) (*Segment,error) {
 
 	current := r.routes.root
 	var tmp Segment
+    var err error
 	for _, n := range routes {
-		tmp = FromString(n)
+		tmp,err = FromString(n)
+        if(err!=nil){
+            return nil,err
+        }
 		find := current.GetChild(tmp)
 
 		//if nil create new node and append to current
@@ -120,7 +125,7 @@ func (r *Router) AddRoute(routes []string, handler http.HandlerFunc) *Segment {
 	}
 	content := &current.value
 	content.handler = handler
-	return content
+	return content,nil
 }
 
 // searchs for a Segment matching the specified route.
@@ -129,7 +134,8 @@ func (r *Router) Search(routes []string) *Segment {
 	current := r.routes.root
 	var tmp Segment
 	for _, n := range routes {
-		tmp = FromString(n)
+		tmp,_ = FromString(n)
+        
 		find := current.GetChild(tmp)
 
 		if find == nil {

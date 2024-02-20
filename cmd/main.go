@@ -16,12 +16,12 @@ func main() {
 
 	router.Endpoint("/", handlers.HandleIndex)
     router.Endpoint("/inicio", handlers.HandleHome)      //.Middlewares(middlewares.Method("GET"),middlewares.Logging())
-	router.Endpoint("/rutas", handlers.HandleRutas)      //.Middlewares(middlewares.Method("GET"),middlewares.Logging())
-	router.Endpoint("/rutas/pendientes", handlers.HandleRutas) //.Middlewares(middlewares.Method("GET"),middlewares.Logging())
-	router.Endpoint("/cositas//pedro/casa", handlers.HandleRutas) //.Middlewares(middlewares.Method("GET"),middlewares.Logging())
+	router.Endpoint("/data", handlers.HandleRutas)      //.Middlewares(middlewares.Method("GET"),middlewares.Logging())
+	router.Endpoint("/user/pendientes", handlers.HandleRutas) //.Middlewares(middlewares.Method("GET"),middlewares.Logging())
+	router.Endpoint("/test", handlers.HandleRutasUnit) //.Middlewares(middlewares.Method("GET"),middlewares.Logging())
+	router.Endpoint("/user/{id}", handlers.HandleRutasUnit) //.Middlewares(middlewares.Method("GET"),middlewares.Logging())
+
     router.PrintRoutes()   
     log.Println("Listening on ",addr)
 	http.ListenAndServe(addr, &router)
-	 
-
 }
